@@ -54,7 +54,7 @@ public class TaskServiceTests {
         Task fakeTask = new Task(
                 1, "laundry", 30, LocalDateTime.now(), "persil", Importance.MEDIUM
         );
-        when(mockTaskRepository.save(any())).thenReturn(fakeTask);
+        when(mockTaskRepository.saveAndFlush(any())).thenReturn(fakeTask);
 
         Task actual = taskService.addTask(
                 "laundry",

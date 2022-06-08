@@ -54,23 +54,24 @@ public class TaskController {
         );
         return new ResponseEntity<>(taskToAdd, HttpStatus.OK);
     }
-//
-//    @DeleteMapping("/delete-task/{id}")
-//    public ResponseEntity<Task> deleteTaskById(@PathVariable int id) {
-//        if (taskMap.containsKey(id)) {
-//            taskService.deleteTask(id);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } else {
-//
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//
-//        }
 
     @DeleteMapping("/delete-task/{id}")
-    public void deleteTaskById(@PathVariable int id) {
-        taskService.deleteTask(id);
-    }
+    public ResponseEntity deleteTaskById(@PathVariable int id) {
+        Optional<Task> optionalTask = taskService.getTaskById(id);
+        if (optionalTask.isPresent()) {
+            taskService.deleteTask(id);
+            taskMap.remove(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        }
+
+//    @DeleteMapping("/delete-task/{id}")
+//    public void deleteTaskById(@PathVariable int id) {
+//        taskService.deleteTask(id);
+//    }
 
 
 

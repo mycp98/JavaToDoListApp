@@ -98,21 +98,19 @@ public class TaskControllerTests {
 
     @Test
     public void deleteTaskById_mustReturnOkAndDeleteCorrectTaskObject() {
-//        Task fakeTask = new Task(
-//                1, "laundry", 30, LocalDateTime.now(), "persil", Importance.MEDIUM
-//        );
-//        ResponseEntity<Task> expectedResponse = new ResponseEntity<>(fakeTask, HttpStatus.OK);
-//
-//        when(mockTaskService.getTaskById(fakeTask.getId())).thenReturn(Optional.of(fakeTask));
-//        when(mockTaskService.deleteTask(fakeTask.getId())).thenReturn();
+        Task fakeTask = new Task(
+                1, "laundry", 30, LocalDateTime.now(), "persil", Importance.MEDIUM
+        );
 
+        when(mockTaskService.getTaskById(fakeTask.getId())).thenReturn(Optional.of(fakeTask));
 
+        ResponseEntity expectedResponse = new ResponseEntity<>(HttpStatus.OK);
 
-//        ResponseEntity<Task> expectedResponse = new ResponseEntity<>(HttpStatus.OK);
-//
-//        when(mockTaskService.deleteTask(1)).thenReturn()
+        ResponseEntity actualResponse = taskController.deleteTaskById(fakeTask.getId());
 
-        taskController.deleteTaskById(1);
         verify(mockTaskService, times(1)).deleteTask(1);
+
+        assertEquals(expectedResponse, actualResponse);
+
     }
 }
