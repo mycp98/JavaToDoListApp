@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,5 +93,43 @@ public class TaskServiceTests {
     public void deleteTask() {
         taskService.deleteTask(1);
         verify(mockTaskRepository, times(1)).deleteById(1);
+    }
+
+    @Test
+    public void updateTask_mustUpdateCorrectTask(){
+        Integer id = 1;
+        Task fakeTask1 = new Task(id,"laundry", 30, LocalDateTime.now(), "persil", Importance.MEDIUM
+        );
+        Task fakeTaskUpdated = new Task(id, "shopping", 30, LocalDateTime.now(), "sainsburys", Importance.MEDIUM
+        );
+
+        when(mockTaskRepository.findById(id)).thenReturn(Optional.of(fakeTask1));
+        when(mockTaskRepository.save(fakeTaskUpdated)).thenReturn(fakeTaskUpdated);
+
+        Optional<Task> actualTask = taskService.updateTask(
+                fakeTask1.getId(),
+                fakeTaskUpdated.getName(),
+                fakeTaskUpdated.getDuration(),
+                fakeTaskUpdated.getDueDate(),
+                fakeTaskUpdated.getDescription(),
+                fakeTaskUpdated.getImportance()
+        );
+
+        assertEquals(Optional.of(fakeTaskUpdated), actualTask);
+
+    }
+    @Test
+    public void updateTask_existingTaskNotFound(){
+        when(mockTaskRepository.findById(any())).thenReturn(Optional.empty());
+        Optional<Task> actualResult = taskService.updateTask(
+                1,
+                "cleaning",
+                30,
+                LocalDateTime.now(),
+                "something",
+                Importance.HIGH
+        );
+
+        assertEquals(Optional.empty(), actualResult);
     }
 }

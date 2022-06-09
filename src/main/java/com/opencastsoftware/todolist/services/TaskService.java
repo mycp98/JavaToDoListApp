@@ -42,4 +42,21 @@ public class TaskService {
     }
 
     //update task
+    public Optional<Task> updateTask(Integer existingTaskId, String name, Integer duration, LocalDateTime dueDate, String description, Importance importance){
+
+        Optional<Task> optionalExistingTask = taskRepository.findById(existingTaskId);
+        if(optionalExistingTask.isPresent()) {
+            Task existingTask = optionalExistingTask.get();
+            existingTask.setName(name);
+            existingTask.setDuration(duration);
+            existingTask.setDueDate(dueDate);
+            existingTask.setDescription(description);
+            existingTask.setImportance(importance);
+
+            taskRepository.save(existingTask);
+            return Optional.of(existingTask);
+        }
+
+        return Optional.empty();
+    };
 }

@@ -4,8 +4,11 @@ import com.opencastsoftware.todolist.models.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface TaskRepository extends JpaRepository<Task, Integer> {}
+public interface TaskRepository extends JpaRepository<Task, Integer> {
+}
 
 // Created a Task repository that stores Task objects that are identified by an Integer
 // 1) Connects to database with columns and table defined in the Task model

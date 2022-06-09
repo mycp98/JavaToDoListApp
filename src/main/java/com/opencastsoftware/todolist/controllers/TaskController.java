@@ -55,6 +55,17 @@ public class TaskController {
         return new ResponseEntity<>(taskToAdd, HttpStatus.OK);
     }
 
+    @PutMapping("/update-task")
+    public ResponseEntity<Task> updateTask(@RequestBody Task taskToUpdate) {
+        //call task service Update method with the properties of the taskToUpdate
+        //handle the optional in the same way as getTaskById - use as a guide
+        //lines 35 to 37
+
+        //test for updated successfully
+        //test for when couldnt find existing task (optional empty)
+        return null;
+    }
+
     @DeleteMapping("/delete-task/{id}")
     public ResponseEntity deleteTaskById(@PathVariable int id) {
         Optional<Task> optionalTask = taskService.getTaskById(id);
