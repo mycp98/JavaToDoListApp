@@ -113,4 +113,49 @@ public class TaskControllerTests {
         assertEquals(expectedResponse, actualResponse);
 
     }
+
+    @Test
+    public void updateTask_mustUpdateTaskSuccessfully(){
+        Integer id = 1;
+//        Task fakeTask1 = new Task(id,"laundry", 30, LocalDateTime.now(), "persil", Importance.MEDIUM
+//        );
+        Task fakeTaskUpdated = new Task(id, "shopping", 30, LocalDateTime.now(), "sainsburys", Importance.MEDIUM
+        );
+
+        ResponseEntity<Task> expectedResponse = new ResponseEntity<>(fakeTaskUpdated, HttpStatus.OK);
+
+        when(mockTaskService.updateTask(
+                fakeTaskUpdated.getId(),
+                fakeTaskUpdated.getName(),
+                fakeTaskUpdated.getDuration(),
+                fakeTaskUpdated.getDueDate(),
+                fakeTaskUpdated.getDescription(),
+                fakeTaskUpdated.getImportance())
+        ).thenReturn(Optional.of(fakeTaskUpdated));
+
+        ResponseEntity<Task> actualResponse = taskController.updateTask(fakeTaskUpdated);
+
+        assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void updateTask_mustReturnNotFound_whenTheServiceReturnsAnEmptyOptional() {
+        Task fakeTaskUpdated = new Task(99, "shopping", 30, LocalDateTime.now(), "sainsburys", Importance.MEDIUM
+        );
+        ResponseEntity<Task> expectedResponse = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        when(mockTaskService.updateTask(
+                99,
+                "cleaning",
+                30,
+                LocalDateTime.now(),
+                "something",
+                Importance.HIGH
+        )).thenReturn(Optional.empty());
+
+        ResponseEntity<Task> actualResponse = taskController.updateTask(fakeTaskUpdated);
+
+        assertEquals(expectedResponse, actualResponse);
+
+    }
 }

@@ -63,7 +63,20 @@ public class TaskController {
 
         //test for updated successfully
         //test for when couldnt find existing task (optional empty)
-        return null;
+        Optional<Task> optionalTaskToBeUpdated = taskService.updateTask(
+                taskToUpdate.getId(),
+                taskToUpdate.getName(),
+                taskToUpdate.getDuration(),
+                taskToUpdate.getDueDate(),
+                taskToUpdate.getDescription(),
+                taskToUpdate.getImportance()
+        );
+        return optionalTaskToBeUpdated
+                .map(task -> {
+                 taskMap.remove(task.getId());
+                 return new ResponseEntity<>(task, HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/delete-task/{id}")
@@ -78,11 +91,6 @@ public class TaskController {
         }
 
         }
-
-//    @DeleteMapping("/delete-task/{id}")
-//    public void deleteTaskById(@PathVariable int id) {
-//        taskService.deleteTask(id);
-//    }
 
 
 
